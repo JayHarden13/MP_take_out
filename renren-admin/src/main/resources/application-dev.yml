@@ -2,10 +2,11 @@ spring:
   datasource:
     druid:
       #MySQL
-      driver-class-name: com.mysql.cj.jdbc.Driver
+      #driver-class-name: com.mysql.cj.jdbc.Driver
+      driver-class-name: com.mysql.jdbc.Driver
       url: jdbc:mysql://localhost:3306/takeout?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&nullCatalogMeansCurrent=true
-      username: root
-      password: yx123456
+      username: admin
+      password: 123456
       #      #Oracle
       #      driver-class-name: oracle.jdbc.OracleDriver
       #      url: jdbc:oracle:thin:@192.168.10.10:1521:xe
