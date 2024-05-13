@@ -53,8 +53,10 @@
         "appid" : "wxab12212fe8c785f7",
         "setting" : {
             "urlCheck" : false,
-            "es6" : true
+            "es6" : true,
+            "minified" : true
         },
+        "lazyCodeLoading" : "requiredComponents",
         "usingComponents" : true
     },
     "mp-alipay" : {
@@ -69,5 +71,18 @@
     "uniStatistics" : {
         "enable" : false
     },
-    "vueVersion" : "2"
+    "vueVersion" : "2",
+    "h5" : {
+        "devServer" : {
+            "port" : 8083,
+            "disableHostCheck" : true,
+            "proxy" : {
+                "/" : {
+                    "target" : "http://localhost:8081/api",
+                    "changeOrigin" : true,
+                    "secure" : false
+                }
+            }
+        }
+    }
 }

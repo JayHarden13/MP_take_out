@@ -15,12 +15,6 @@
 </template>
 
 <script>
-	import {
-		getBaseUrl,
-		requestUtil,
-		getWxLogin,
-		getUserProfile
-	} from '../../utils/requestUtils';
 	import regeneratorRuntime, {
 		async
 	} from '../../lib/runtime/runtime';
@@ -45,7 +39,7 @@
 			toOrderPage(){
 				console.log("执行了")
 				uni.switchTab({
-					url:'/pages/orderList/orderList'
+					url:'/pages/index/index'
 				})
 							
 			},

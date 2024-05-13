@@ -1,9 +1,8 @@
 package io.renren.controller;
 
-import io.renren.annotation.Login;
-import io.renren.common.dto.DishDTO;
-import io.renren.common.service.DishService;
 import io.renren.common.utils.Result;
+import io.renren.dto.DishDTO;
+import io.renren.service.DishService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,8 +29,11 @@ public class ApiDishController {
 
     @GetMapping("list")
     @ApiOperation("菜品")
-    public Result<List<DishDTO>> listResult(DishDTO dishDTO){
+    public Result listResult(DishDTO dishDTO){
         List<DishDTO> list = dishService.findDishByCategoryId(dishDTO);
+        if (list.size() == 0){
+            return new Result<>().error("菜品信息不存在");
+        }
         return new Result<List<DishDTO>>().ok(list);
     }
 

@@ -27,8 +27,8 @@
                 <div class="addBut" style="margin-bottom: 20px" @click="openAddDish">+ 添加菜品</div>
                 <div class="table">
                   <el-table :data="dishTable" style="width: 100%">
-                    <el-table-column prop="name" label="名称" width="180" align="center"></el-table-column>
-                    <el-table-column prop="price" label="原价" width="180">
+                    <el-table-column prop="name" label="名称"  align="center"></el-table-column>
+                    <el-table-column prop="price" label="原价" >
                       <template slot-scope="scope"> {{ Number(scope.row.price) / 100 }}</template>
                     </el-table-column>
                     <el-table-column prop="address" label="份数" align="center">
@@ -42,9 +42,9 @@
                         ></el-input-number>
                       </template>
                     </el-table-column>
-                    <el-table-column prop="address" label="操作" width="180px;" align="center">
+                    <el-table-column prop="address" label="操作"  align="center">
                       <template slot-scope="scope">
-                        <el-button type="text" size="small" @click="delDishHandle(scope.$index)"> 删除</el-button>
+                        <el-button type="text" size="small" @click="delDishHandle(scope.$index)">删除</el-button>
                       </template>
                     </el-table-column>
                   </el-table>
@@ -58,7 +58,7 @@
         <el-form-item label="套餐图片" class="uploadImg">
           <el-upload
               class="avatar-uploader"
-              action="http://localhost:8080/api/takeout/common/upload"
+              :action="uploadUrl"
               :headers="headerObj"
               :show-file-list="false"
               :on-success="handleAvatarSuccess"
@@ -85,6 +85,7 @@
           :visible.sync="dialogVisible"
           width="60%"
           :before-close="handleClose"
+          :modal="false"
       >
         <el-input
             v-model="value"
@@ -151,7 +152,7 @@
                   :key="ind"
                   class="item"
               >
-                <span>{{ item.dishName }}</span>
+                <span>{{ item.name }}</span>
                 <span class="price">￥ {{ Number(item.price) / 100 }} </span>
                 <span
                     class="del"
@@ -181,13 +182,14 @@
 
 <script>
 import debounce from 'lodash/debounce'
-import QiniuUrl from "@/utils/QiniuUrl";
+
 import Cookies from "js-cookie";
 import {getCategoryList, queryDishList} from "@/api/dish/dish";
 
 export default {
   data() {
     return {
+      uploadUrl: '',
       visible: false,
       dataForm: {
         name: '',
@@ -203,7 +205,7 @@ export default {
       headerObj: {
         token: Cookies.get('token')
       },
-      QiNiuYunUrl: QiniuUrl,
+
       id: '',
       value: '',
       setMealList: [],
@@ -275,6 +277,7 @@ export default {
   },
   methods: {
     init() {
+      this.uploadUrl = `${window.SITE_CONFIG['apiURL']}/sys/oss/upload?token=${Cookies.get('token')}`
       this.visible = true
       this.$nextTick(() => {
         this.$refs['dataForm'].resetFields()
@@ -296,9 +299,7 @@ export default {
 
         this.dataForm.price = res.data.price / 100
 
-        this.imageUrl = this.QiNiuYunUrl+this.dataForm.image;
-
-        //this.imageUrl = `/common/download?name=${res.data.image}`
+        this.imageUrl = this.dataForm.image;
         this.checkList = res.data.setmealDishes
         this.dishTable = res.data.setmealDishes
         this.dataForm.idType = res.data.categoryId
@@ -348,11 +349,21 @@ export default {
     }, 1000, {'leading': true, 'trailing': false}),
 
     handleAvatarSuccess(response, file, fileList) {
-      // this.imageUrl = response.data
-
-      this.imageUrl = this.QiNiuYunUrl + response.data
-      this.dataForm.image = response.data
-
+      if(response.code === 0){
+        this.imageUrl = response.data.src
+        this.dataForm.image = this.imageUrl
+        this.$message({
+            message: this.$t('prompt.uploadSuccess'),
+            type: 'success',
+            duration: 1000,
+          })
+      } else{
+        this.$message({
+            message: this.$t('prompt.uploadFailed'),
+            type: 'error',
+            duration: 1000,
+          })
+      }
     },
 
     onChange(file) {
@@ -516,6 +527,7 @@ export default {
 }
 
 .addDishList .seachDish {
+
   position: absolute;
   top: 10px;
   right: 20px;
@@ -531,7 +543,7 @@ export default {
 }
 
 .addDish {
-  width: 777px;
+  width: 100%;
 }
 
 .addDish .addBut {
@@ -554,6 +566,7 @@ export default {
 }
 
 .addDishCon {
+
   padding: 0 20px;
   display: flex;
   line-height: 40px;
@@ -671,7 +684,7 @@ export default {
   overflow: hidden;
 }
 .avatar-uploader .el-upload:hover {
-  border-color: #409EFF;
+  border-color: #feca50;
 }
 .avatar-uploader-icon {
   font-size: 28px;

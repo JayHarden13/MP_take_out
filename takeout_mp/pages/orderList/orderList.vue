@@ -8,7 +8,8 @@
 			<view class="divBody" v-if="orderList.length > 0">
 				<u-list @scrolltolower="scrolltolower" lowerThreshold="150">
 					<u-list-item v-for="(order, index) in orderList" :key="index">
-						<view class="item" @touchstart="touchstartE(order)" @touchend="touchendE(order)">
+						<!-- <view class="item" @touchstart="touchstartE(order)" @touchend="touchendE(order)"> -->
+							<view class="item">
 							<view class="timeStatus">
 								<view class="zuodingwei"></view>
 								<text class="time">{{ order.orderTime }}</text>
@@ -48,12 +49,6 @@
 
 <script>
 	import '../../api/orderList.js';
-	import {
-		getBaseUrl,
-		requestUtil,
-		getWxLogin,
-		getUserProfile
-	} from '../../utils/requestUtils';
 	import regeneratorRuntime, {
 		async
 	} from '../../lib/runtime/runtime';

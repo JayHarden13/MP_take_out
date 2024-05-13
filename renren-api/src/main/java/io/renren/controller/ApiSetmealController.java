@@ -1,10 +1,9 @@
 package io.renren.controller;
 
 import io.renren.annotation.Login;
-import io.renren.common.dto.SetmealDTO;
-import io.renren.common.entity.SetmealEntity;
-import io.renren.common.service.SetmealService;
 import io.renren.common.utils.Result;
+import io.renren.dto.SetmealDTO;
+import io.renren.service.SetmealService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +28,7 @@ public class ApiSetmealController {
     private SetmealService setmealService;
 
 
-    @Login
+
     @GetMapping("/{id}")
     @ApiOperation("套餐信息")
     public Result<SetmealDTO> get(@PathVariable("id") Long id){
@@ -44,11 +43,11 @@ public class ApiSetmealController {
     }
 
 
-    @Login
+
     @GetMapping("/list")
     @ApiOperation("套餐列表")
-    public Result<List<SetmealEntity>> list(SetmealDTO setmealDTO){
-        List<SetmealEntity> setmealEntityList = setmealService.findSetmealByCategoryId(setmealDTO);
+    public Result<List<SetmealDTO>> list(SetmealDTO setmealDTO){
+        List<SetmealDTO> setmealEntityList = setmealService.findSetmealByCategoryId(setmealDTO);
         return new Result().ok(setmealEntityList);
     }
 

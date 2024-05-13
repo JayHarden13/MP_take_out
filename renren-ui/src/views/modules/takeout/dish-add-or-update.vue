@@ -118,12 +118,11 @@
       <el-form-item
           label="菜品图片:"
           prop="region"
-
       >
         <el-upload
             class="avatar-uploader"
             :headers="headerObj"
-            action="http://localhost:8080/api/takeout/common/upload"
+            :action="uploadUrl"
             :show-file-list="false"
             :on-success="handleAvatarSuccess"
             :on-change="onChange"
@@ -174,7 +173,7 @@
 import debounce from 'lodash/debounce'
 import Cookies from "js-cookie";
 import {getCategoryList} from "@/api/dish/dish";
-import QiniuUrl from "@/utils/QiniuUrl";
+
 
 export default {
   data() {
@@ -187,10 +186,9 @@ export default {
       headerObj: {
         token: Cookies.get("token")
       },
-      QiNiuYunUrl: QiniuUrl,
+
       imageUrl: '',
-
-
+      uploadUrl: '',
       dataForm: {
         id: '',
         name: '',
@@ -271,7 +269,8 @@ export default {
 
     },
     init() {
-      this.visible = true
+      this.visible = true,
+      this.uploadUrl = `${window.SITE_CONFIG['apiURL']}/sys/oss/upload?token=${Cookies.get('token')}`
       this.$nextTick(() => {
         this.$refs['dataForm'].resetFields()
         this.getDishList()
@@ -298,7 +297,7 @@ export default {
           value: JSON.parse(obj.value),
           showOption: false
         }))
-        this.imageUrl = this.QiNiuYunUrl+this.dataForm.image;
+        this.imageUrl = this.dataForm.image;
 
       }).catch(() => {
       })
@@ -357,16 +356,20 @@ export default {
     },
 
     handleAvatarSuccess(response, file, fileList) {
-      // 拼接down接口预览
-      if (response.code === 1 && response.msg === '未登录') {
-        window.top.location.href = '/backend/page/login/login.html'
-      } else {
-        //this.imageUrl = `/common/download?name=${response.data}`
-
-        this.imageUrl = this.QiNiuYunUrl + response.data
-        this.dataForm.image = response.data
-        console.log("imageUrl", this.imageUrl)
-        console.log("image", this.dataForm.image)
+      if(response.code === 0){
+        this.imageUrl = response.data.src
+        this.dataForm.image = this.imageUrl
+        this.$message({
+            message: this.$t('prompt.uploadSuccess'),
+            type: 'success',
+            duration: 1000,
+          })
+      } else{
+        this.$message({
+            message: this.$t('prompt.uploadFailed'),
+            type: 'error',
+            duration: 1000,
+          })
       }
     },
 
@@ -510,7 +513,7 @@ export default {
 }
 
 .avatar-uploader .el-upload:hover {
-  border-color: #409EFF;
+  border-color: #feca50;
 }
 
 .avatar-uploader-icon {
@@ -529,7 +532,9 @@ export default {
 }
 
 .flavorBox {
-  width: 777px;
+  width: 100%;
+  max-width: 100%;
+
 }
 
 .flavorBox .addBut {
@@ -552,10 +557,12 @@ export default {
 }
 
 .flavorBox .flavor .title {
+  white-space: nowrap;
   color: #606168;
 }
 
 .flavorBox .flavor .cont .items {
+  max-width: 100%;
   display: flex;
   margin: 10px 0;
 }

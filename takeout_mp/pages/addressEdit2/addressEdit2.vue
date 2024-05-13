@@ -10,12 +10,12 @@
 							v-model="form.consignee"></u-input>
 					</view>
 					
-					<text class="spanChecked" @click="form.gender = '1'">
-						<text :class="{iActive:form.gender == '1'}"></text>
-						先生
-					</text>
 					<text class="spanChecked" @click="form.gender = '0'">
 						<text :class="{iActive:form.gender == '0'}"></text>
+						先生
+					</text>
+					<text class="spanChecked" @click="form.gender = '1'">
+						<text :class="{iActive:form.gender == '1'}"></text>
 						女士
 					</text>
 				</view>
@@ -49,12 +49,6 @@
 </template>
 
 <script>
-	import {
-		getBaseUrl,
-		requestUtil,
-		getWxLogin,
-		getUserProfile
-	} from '../../utils/requestUtils';
 	import regeneratorRuntime, {
 		async
 	} from '../../lib/runtime/runtime';

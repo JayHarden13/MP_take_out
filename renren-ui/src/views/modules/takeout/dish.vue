@@ -28,7 +28,7 @@
         <el-table-column type="selection" header-align="center" align="center" width="50"></el-table-column>
         <el-table-column prop="id" label="菜品ID" header-align="center" align="center"></el-table-column>
         <el-table-column prop="name" label="菜品名称" header-align="center" align="center"></el-table-column>
-        <el-table-column prop="categoryId" label="菜品分类id" header-align="center" align="center"></el-table-column>
+        <el-table-column prop="categoryName" label="菜品分类" header-align="center" align="center"></el-table-column>
 <!--        <el-table-column prop="price" label="菜品价格" header-align="center" align="center"></el-table-column>-->
         <el-table-column
             align="center"
@@ -44,8 +44,8 @@
         <el-table-column  prop="image" label="图片" align="center">
           <template slot-scope="{ row }">
             <el-image style="width: auto; height: 40px; border:none;cursor: pointer;"
-                      :src="getImage(row.image)"
-                      :preview-src-list="[ QiNiuYunUrl+row.image ]" >
+                      :src="row.image"
+                      :preview-src-list="[row.image]" >
               <div slot="error" class="image-slot">
                 <img src="../../../assets/img/noImg.png"  style="width: auto; height: 40px; border:none;" >
               </div>
@@ -93,7 +93,7 @@
 <script>
 import mixinViewModule from '@/mixins/view-module'
 import AddOrUpdate from './dish-add-or-update'
-import QiniuUrl from "@/utils/QiniuUrl";
+
 import debounce from "lodash/debounce";
 
 export default {
@@ -109,7 +109,8 @@ export default {
         updateStatusIsBatch: true,
         updateStatusURL: '/takeout/dish/updateStatus'
       },
-      QiNiuYunUrl:QiniuUrl,
+      order: 'desc',
+      orderField: 'update_date',
       dataForm: {
         id: ''
       }
@@ -119,11 +120,7 @@ export default {
     AddOrUpdate
   },
   methods:{
-    getImage (image) {
-      //return `http://rafqqxzvc.hn-bkt.clouddn.com/${image}`
-      console.log(this.QiNiuYunUrl+image)
-      return this.QiNiuYunUrl+image
-    },
+
     updateStatus(row){
       let params = {}
       params.id = row.id

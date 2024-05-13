@@ -8,12 +8,12 @@
 				<view class="divItem" v-for="(item,index) in addressList" :key="index">
 					<view class="divAddress">
 						<text
-							:class="{spanCompany:item.label === '公司',spanHome:item.label === '家',spanSchool:item.label === '学校'}">{{item.label}}</text>
+							:class="{spanNone:item.label === '无',spanCompany:item.label === '公司',spanHome:item.label === '家',spanSchool:item.label === '学校'}">{{item.label}}</text>
 						{{item.detail}}
 					</view>
 					<view class="divUserPhone">
 						<text>{{item.consignee}}</text>
-						<text>{{item.gender === '0' ? '女士' : '先生'}}</text>
+						<text>{{item.gender === 0 ? '先生' : '女士'}}</text>
 						<text>{{item.phone}}</text>
 					</view>
 					<image src="../../static/images/edit.png" @click.stop.prevent="toAddressEditPage(item)" />
@@ -34,12 +34,6 @@
 </template>
 
 <script>
-	import {
-		getBaseUrl,
-		requestUtil,
-		getWxLogin,
-		getUserProfile
-	} from '../../utils/requestUtils';
 	import regeneratorRuntime, {
 		async
 	} from '../../lib/runtime/runtime';
@@ -80,9 +74,6 @@
 			this.initData()
 		},
 		methods: {
-			goBack() {
-				history.go(-1)
-			},
 			toAddressEditPage(item) {
 				uni.navigateTo({
 					url: "/pages/addressEdit2/addressEdit2?id=" + item.id,
@@ -96,6 +87,7 @@
 
 			},
 			async initData() {
+				this.show = false
 				const res = await addressListApi()
 				if (res.code === 0) {
 					this.addressList = res.data
@@ -151,7 +143,11 @@
 		}
 	}
 </script>
-
+<style>
+	page{
+		background-color:  #f3f2f7;
+	}
+</style>
 <style>
 	@import url(../address/address.css);
 </style>

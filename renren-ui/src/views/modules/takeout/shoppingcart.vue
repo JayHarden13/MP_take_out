@@ -21,12 +21,21 @@
       <el-table v-loading="dataListLoading" :data="dataList" border @selection-change="dataListSelectionChangeHandle" style="width: 100%;">
         <el-table-column type="selection" header-align="center" align="center" width="50"></el-table-column>
         <el-table-column prop="id" label="购物车ID" header-align="center" align="center"></el-table-column>
-        <el-table-column prop="name" label="名称" header-align="center" align="center"></el-table-column>
+        <el-table-column prop="name" label="名称" header-align="center" align="center">
+          <template slot-scope="{ row }">
+            <div>
+              <el-tag v-if="row.dishId" type="success" size="small">菜品</el-tag>
+              <el-tag v-else  size="small">套餐</el-tag>
+            </div>
+            <div>{{ row.name }}</div>
+          </template>
+
+        </el-table-column>
 <!--        <el-table-column prop="image" label="图片" header-align="center" align="center"></el-table-column>-->
         <el-table-column prop="image" label="图片"  align="center">
           align="center">
           <template slot-scope="{ row }">
-            <el-image style="width: auto; height: 40px; border:none;cursor: pointer;" :src="getImage(row.image)" :preview-src-list="[ QiNiuYunUrl+row.image ]" >
+            <el-image style="width: auto; height: 40px; border:none;cursor: pointer;" :src="row.image" :preview-src-list="[ row.image ]" >
               <div slot="error" class="image-slot">
                 <img src="../../../assets/img/noImg.png"  style="width: auto; height: 40px; border:none;" >
               </div>
@@ -34,8 +43,6 @@
           </template>
         </el-table-column>
         <el-table-column prop="userId" label="会员ID" header-align="center" align="center"></el-table-column>
-        <el-table-column prop="dishId" label="菜品ID" header-align="center" align="center"></el-table-column>
-        <el-table-column prop="setmealId" label="套餐ID" header-align="center" align="center"></el-table-column>
         <el-table-column prop="dishFlavor" label="口味" header-align="center" align="center"></el-table-column>
         <el-table-column prop="number" label="数量" header-align="center" align="center"></el-table-column>
         <el-table-column prop="amount" label="金额" header-align="center" align="center"></el-table-column>
@@ -68,7 +75,7 @@
 <script>
 import mixinViewModule from '@/mixins/view-module'
 import AddOrUpdate from './shoppingcart-add-or-update'
-import QiniuUrl from "@/utils/QiniuUrl";
+
 export default {
   mixins: [mixinViewModule],
   data () {
@@ -83,7 +90,7 @@ export default {
       dataForm: {
         id: ''
       },
-      QiNiuYunUrl: QiniuUrl,
+
 
     }
   },
@@ -91,9 +98,7 @@ export default {
     AddOrUpdate
   },
   methods:{
-    getImage (image) {
-      return this.QiNiuYunUrl+image
-    },
+
   }
 }
 </script>
