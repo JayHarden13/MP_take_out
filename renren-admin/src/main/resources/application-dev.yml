@@ -63,7 +63,7 @@ spring:
 #      username: postgres
 #      password: 123456
 
-# Minio配置
+# Minio配置1
 minio:
   # minio配置的地址，端口9000
   url: http://192.168.65.100:9000
