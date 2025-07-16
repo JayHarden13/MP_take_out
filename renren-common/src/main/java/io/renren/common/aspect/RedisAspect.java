@@ -35,7 +35,7 @@ public class RedisAspect {
 
     @Around("execution(* io.renren.common.redis.RedisUtils.*(..))")
     public Object around(ProceedingJoinPoint point) throws Throwable {
-        Object result = null;//测试
+        Object result = null;//ceshi
         if(open){
             try{
                 result = point.proceed();
