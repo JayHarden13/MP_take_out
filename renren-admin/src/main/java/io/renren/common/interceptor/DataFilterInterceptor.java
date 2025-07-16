@@ -45,7 +45,7 @@ public class DataFilterInterceptor implements InnerInterceptor {
         String buildSql = getSelect(boundSql.getSql(), scope);
 
         // 重写SQL
-        PluginUtils.mpBoundSql(boundSql).sql(buildSql);//哈哈
+        PluginUtils.mpBoundSql(boundSql).sql(buildSql);
     }
 
     private DataScope getDataScope(Object parameter){
