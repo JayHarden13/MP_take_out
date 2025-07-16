@@ -35,7 +35,7 @@ public class MybatisPlusConfig {
         // 乐观锁
         mybatisPlusInterceptor.addInnerInterceptor(new OptimisticLockerInnerInterceptor());
         // 防止全表更新与删除
-        mybatisPlusInterceptor.addInnerInterceptor(new BlockAttackInnerInterceptor());//哈哈哈哈哈哈哈
+        mybatisPlusInterceptor.addInnerInterceptor(new BlockAttackInnerInterceptor());
 
         return mybatisPlusInterceptor;
     }
